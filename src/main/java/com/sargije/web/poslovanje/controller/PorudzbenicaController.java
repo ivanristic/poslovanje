@@ -177,7 +177,7 @@ public class PorudzbenicaController {
 		}
 		return "redirect:/porudzbenica_stavke/" + porudzbenicaStavke.getPorudzbenica().getPorudzbenicaId();
 	 }	
-		
+	/**
 	@GetMapping(value="/stampaj_porudzbenicu/{id}")
     public ModelAndView getPdf(@PathVariable(value="id") Long id, HttpServletRequest request, HttpServletResponse response) throws SQLException{
         Map<String, Object> model = new HashMap<String, Object>();
@@ -187,7 +187,17 @@ public class PorudzbenicaController {
         response.setHeader( "Content-disposition", "inline");//"attachment; filename=myfile.pdf" );         
         return new ModelAndView(new PdfView(), model);
     }
-	
+	*/
+	 
+	 @GetMapping(value="/stampaj_porudzbenicu/{id}", produces={"application/pdf"})
+	 public String getPdf(Model model, @PathVariable(value="id") Long id) {
+		 
+		 model.addAttribute("porudzbenica", porudzbenicaRepository.findOne(id));
+
+	     return "com.sargije.web.poslovanje.views.PdfView";
+	     
+	 }
+	 
 	 @GetMapping("/brisi_poruzbenicu/{id}")
 	 public String getBrisiPorudzbenicu(Model model, @PathVariable(value="id") Long id) {
 		 
